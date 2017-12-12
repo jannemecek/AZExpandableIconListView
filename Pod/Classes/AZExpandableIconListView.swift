@@ -14,7 +14,7 @@ open class AZExpandableIconListView: UIView {
     fileprivate var icons:[UIImageView] = []
     fileprivate var scrollView:UIScrollView
     fileprivate var isSetupFinished : Bool = false
-    fileprivate var isExpanded : Bool = false
+    public var isExpanded : Bool = false
     fileprivate var itemSpacingConstraints : [NSLayoutConstraint] = []
     
     open var imageSpacing:CGFloat = 4.0
@@ -65,7 +65,7 @@ open class AZExpandableIconListView: UIView {
         updateContentSize()
     }
     
-    func onViewTapped(){
+    public func onViewTapped(){
         updateSpacingConstraints()
         isExpanded = !isExpanded
         updateContentSize()
@@ -191,7 +191,7 @@ open class AZExpandableIconListView: UIView {
         borderLayer.backgroundColor = UIColor.clear.cgColor
         borderLayer.frame = borderFrame
         borderLayer.cornerRadius = newframe.width * 0.5
-        borderLayer.borderWidth = 4.0
+        borderLayer.borderWidth = 2.0
         borderLayer.borderColor = UIColor.white.cgColor
         borderLayer.masksToBounds = true
         
