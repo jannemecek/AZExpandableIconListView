@@ -20,7 +20,17 @@ An expandable/collapsible UIView that holds an array of UIImageView. Something l
 To run the example project, clone the repo with `git clone https://github.com/Azuritul/AZExpandableIconListView.git`, and run `pod install` from the Example directory first.
 
 ## Usage
-Initialize the view with frame and an array of images, for example:
+
+Make your model conform to `LoadableImage` protocol from the library. This allows displaying of remote images as well as usage of your image cache of choice. Make sure to provide `placeholderImage` as that will be set first before `loadImage(into: view)`.
+
+```Swift
+public protocol LoadableImage {
+    var placeholderImage: UIImage! { get }
+    func loadImage(into view: UIImageView)
+}
+```
+
+Initialize the view with frame and an array of `LoadableImage` objects, for example:
 ```Swift
 let expandable = AZExpandableIconListView(frame: CGRectMake(4, 30, UIScreen.mainScreen().bounds.size.width - 20, 70), images: [image1, image2, image3])
 view.addSubview(expandable)
@@ -28,7 +38,7 @@ view.addSubview(expandable)
 Notice that the width and height of the icons in the view would always be 80% of the containing view's height.
 
 ### Configurable options
-Currently AZDropdownMenu can be customized with the following properties. More will come in the future.
+Currently AZExpandableIconListView can be customized with the following properties. More will come in the future.
 
 - `imageSpacing` The space between icons. Default is 4.
 - `onExpanded` The method to be called when the menu is expanded. Default is null.
