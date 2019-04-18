@@ -6,8 +6,12 @@
 //  Copyright (c) 2016 Chris Wu. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
+public protocol LoadableImage {
+    var placeholderImage: UIImage! { get }
+    func loadImage(into view: UIImageView)
+}
 
 open class AZExpandableIconListView: UIView {
     
@@ -42,8 +46,7 @@ open class AZExpandableIconListView: UIView {
      
      - returns: an AZExpandableIconListView
      */
-    public init(frame: CGRect, images:[UIImage]) {
-        
+    public init<T: Sequence>(frame: CGRect, images: T) where T.Element: LoadableImage {
         scrollView = UIScrollView(frame: frame)
         scrollView.isScrollEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
@@ -55,10 +58,11 @@ open class AZExpandableIconListView: UIView {
         scrollView.addGestureRecognizer(onTapView)
         
         for image in images {
-            let imageView = buildCircularIconFrom(image, containerFrame: frame)
+            let imageView = buildCircularIconFrom(image.placeholderImage, containerFrame: frame)
             imageView.translatesAutoresizingMaskIntoConstraints = false
             self.icons.append(imageView)
             scrollView.addSubview(imageView)
+            image.loadImage(into: imageView)
         }
         self.addSubview(scrollView)
         updateConstraints()
