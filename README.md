@@ -14,7 +14,7 @@ An expandable/collapsible UIView that holds an array of UIImageView. Something l
 ## Requirements
 - iOS 9 or above
 - Xcode 9 or above
-- Swift 4
+- Swift 4.2
 
 ## Demo Project
 To run the example project, clone the repo with `git clone https://github.com/Azuritul/AZExpandableIconListView.git`, and run `pod install` from the Example directory first.
@@ -51,11 +51,11 @@ it, simply add the following line to your Podfile:
 
 ```ruby
 use_frameworks!
-pod 'AZExpandableIconListView'
+pod 'AZExpandableIconListView', :git => 'https://github.com/jannemecek/AZExpandableIconListView.git'
 ```
 ## Version
-- 0.2.0
-   - Updated for Swift 3
+- 0.3.0
+   - Updated for Swift 4.2
 - 0.1.1
    - Updated README
 - 0.1.0
