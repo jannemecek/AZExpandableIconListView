@@ -9,6 +9,7 @@
 import UIKit
 
 public protocol LoadableImage {
+    var isPlaceholder: Bool { get }
     var placeholderImage: UIImage! { get }
     func loadImage(into view: UIImageView)
 }
@@ -24,8 +25,8 @@ open class AZExpandableIconListView: UIView {
     open var imageSpacing:CGFloat = 4.0
     open var onExpanded: (()->())?
     open var onCollapsed:(()->())?
+    open var onPlaceholderTapped: (()->())?
     
-    /// Image width is set to be always 80% of container view's frame width
     fileprivate var imageWidth : CGFloat {
         return scrollView.frame.height * 0.8
     }
@@ -54,8 +55,8 @@ open class AZExpandableIconListView: UIView {
         
         super.init(frame: frame)
         
-        let onTapView = UITapGestureRecognizer(target: self, action: #selector(AZExpandableIconListView.onViewTapped))
-        scrollView.addGestureRecognizer(onTapView)
+//        let onTapView = UITapGestureRecognizer(target: self, action: #selector(onViewTapped))
+//        scrollView.addGestureRecognizer(onTapView)
         
         for image in images {
             let imageView = buildCircularIconFrom(image.placeholderImage, containerFrame: frame)
@@ -63,13 +64,22 @@ open class AZExpandableIconListView: UIView {
             self.icons.append(imageView)
             scrollView.addSubview(imageView)
             image.loadImage(into: imageView)
+            if image.isPlaceholder {
+                let tap = UITapGestureRecognizer(target: self, action: #selector(placeholderTapped))
+                imageView.isUserInteractionEnabled = true
+                imageView.addGestureRecognizer(tap)
+            }
         }
         self.addSubview(scrollView)
         updateConstraints()
         updateContentSize()
     }
     
-    @objc public func onViewTapped(){
+    @objc public func placeholderTapped() {
+        onPlaceholderTapped?()
+    }
+    
+    @objc public func onViewTapped() {
         updateSpacingConstraints()
         isExpanded = !isExpanded
         updateContentSize()
