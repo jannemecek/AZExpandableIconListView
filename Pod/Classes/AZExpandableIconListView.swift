@@ -187,6 +187,7 @@ open class AZExpandableIconListView: UIView {
         let newframe = CGRect(x: 0, y: 0, width: imageWidth, height: imageWidth)
         
         let imageView = UIImageView(frame:newframe)
+        imageView.contentMode = .scaleAspectFill
         imageView.image = image
         
         let borderLayer = CALayer()
