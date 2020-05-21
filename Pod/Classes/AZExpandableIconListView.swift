@@ -26,6 +26,7 @@ open class AZExpandableIconListView: UIView {
     open var onExpanded: (()->())?
     open var onCollapsed:(()->())?
     open var onPlaceholderTapped: (()->())?
+    open var onViewTapped: (()->())?
     
     fileprivate var imageWidth : CGFloat {
         return scrollView.frame.height * 0.8
@@ -55,18 +56,21 @@ open class AZExpandableIconListView: UIView {
         
         super.init(frame: frame)
         
-//        let onTapView = UITapGestureRecognizer(target: self, action: #selector(onViewTapped))
+//        let onTapView = UITapGestureRecognizer(target: self, action: #selector(expandViewTapped))
 //        scrollView.addGestureRecognizer(onTapView)
-        
-        for image in images {
+        for (index, image) in images.enumerated() {
             let imageView = buildCircularIconFrom(image.placeholderImage, containerFrame: frame)
             imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.isUserInteractionEnabled = true
+            imageView.tag = index
             self.icons.append(imageView)
             scrollView.addSubview(imageView)
             image.loadImage(into: imageView)
             if image.isPlaceholder {
-                let tap = UITapGestureRecognizer(target: self, action: #selector(placeholderTapped))
-                imageView.isUserInteractionEnabled = true
+                let placeholderTap = UITapGestureRecognizer(target: self, action: #selector(placeholderTapped))
+                imageView.addGestureRecognizer(placeholderTap)
+            } else {
+                let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
                 imageView.addGestureRecognizer(tap)
             }
         }
@@ -79,7 +83,11 @@ open class AZExpandableIconListView: UIView {
         onPlaceholderTapped?()
     }
     
-    @objc public func onViewTapped() {
+    @objc public func viewTapped(_ gesture: UITapGestureRecognizer) {
+        onViewTapped?()
+    }
+    
+    @objc public func expandViewTapped() {
         updateSpacingConstraints()
         isExpanded = !isExpanded
         updateContentSize()
